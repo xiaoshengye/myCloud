@@ -1,0 +1,18 @@
+server:
+  port: 88
+
+
+
+
+eureka:
+  client:
+    #表示是否将自己注册进eureka默认true
+    register-with-eureka: false
+    service-url:
+      #集群版
+      defaultZone: http://eureka7001.com:7001/eureka
+
+
+feign:
+  hystrix:
+    enabled: true

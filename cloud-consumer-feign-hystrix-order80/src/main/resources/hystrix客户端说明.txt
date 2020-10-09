@@ -1,0 +1,31 @@
+1.配置pom
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+
+2.配置yml
+feign:
+  hystrix:
+    enabled: true
+
+3.主启动类
+添加注解@EnableHystrix
+
+4.服务降级配置
+方法一：
+    controller中添加降级方法，eg：consumerTimeOutHandler()
+    业务方法上添加注解并指定降级方法：
+    @HystrixCommand(fallbackMethod = "consumerTimeOutHandler",commandProperties = {
+        @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "1500")
+    })
+
+方法二：
+    controller中添加全局降级方法，eg：payment_global_fallback()
+    controller上添加注解并指定降级方法：@DefaultProperties(defaultFallback = "payment_global_fallback")
+    业务方法上添加注解@HystrixCommand
+
+方法三：
+    feign接口添加一个实现类，每个方法的实现就是降级处理。eg：PaymentFallbackHystrixService.java
+    feign接口的注解指定此实现类
+    @FeignClient(value = "CLOUD-PROVIDER-HYSTRIX-PAYMENT",fallback = PaymentFallbackHystrixService.class)

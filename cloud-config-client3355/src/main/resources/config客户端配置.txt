@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: cloud-config-client #注册到eureka的微服务名称
+  cloud:
+    config:
+      label: master #分支名称
+      name: config #配置文件名称
+      profile: dev #后缀名称
+      uri: http://localhost:3344 #配置中心地址
+
+动态刷新配置：
+
+#暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+业务类上添加注解：
+@RefreshScope
+
+发送POST请求：
+http://localhost:3355/actuator/refresh
+
+
+二、集成bus
+二、集成bus
+1.pom
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+</dependency>
+
+2.yml
+spring:
+  application:
+    name: cloud-config-client #注册到eureka的微服务名称
+  cloud:
+    config:
+      label: master #分支名称
+      name: config #配置文件名称
+      profile: dev #后缀名称
+      uri: http://localhost:3344 #配置中心地址
+  #rabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest

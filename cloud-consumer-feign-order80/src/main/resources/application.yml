@@ -1,0 +1,26 @@
+server:
+  port: 88
+
+spring:
+  application:
+    name: cloud-order-service
+
+eureka:
+  client:
+    #表示是否将自己注册进eureka默认true
+    register-with-eureka: false
+    service-url:
+      #集群版
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
+
+#设置feign客户端超时时间
+ribbon:
+  #建立连接所用的时间
+  ReadTimeout: 5000
+  #建立连接后从服务端读取可用资源所用的时间
+  ConnectTimeout: 5000
+
+logging:
+  level:
+    #日志监控的接口及级别
+    com.csy.springcloud.service: debug

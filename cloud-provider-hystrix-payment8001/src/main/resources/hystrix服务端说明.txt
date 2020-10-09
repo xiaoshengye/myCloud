@@ -1,0 +1,20 @@
+降级情况：
+    程序允许异常
+    服务熔断
+    线程池打满
+
+1.配置pom
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+
+2.配置主启动类
+添加注解@EnableCircuitBreaker
+
+3.业务实现类
+添加降级方法。eg：paymentTimeOutHandler()
+业务方法上添加注解并指定降级方法：
+@HystrixCommand(fallbackMethod = "paymentTimeOutHandler",commandProperties = {
+        @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "5000")
+})
